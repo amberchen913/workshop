@@ -9,6 +9,15 @@ use App\Http\Requests;
 class PagesController extends Controller
 {
     public function about(){
-        return view('pages.about');
+        $people = [
+            'Aaa', 'Bbb', 'Ccc'
+        ];
+        return view('pages.about', compact('people'));
+    }
+
+    public function contact(){
+        $first = 'Amber';
+        $last = 'Chen';
+        return view('pages.contact', compact('first', 'last'));
     }
 }

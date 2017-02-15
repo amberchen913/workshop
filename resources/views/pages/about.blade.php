@@ -1,14 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
+@extends('app')
 
-<body>
+@section('content')
 
-    <h1>About</h1>
+<h1>About</h1>
 
-</body>
+<h3>People I like:</h3>
 
-</html>
+<ul>
+    @foreach($people as $person)
+        <li>{{ $person }}</li>
+    @endforeach
+</ul>
+
+@stop

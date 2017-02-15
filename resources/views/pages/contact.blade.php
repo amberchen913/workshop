@@ -1,14 +1,12 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-</head>
+@extends('app')
 
-<body>
+@section('content')
+<h1>Hi, {{ $first }} {{ $last }} ~~</h1>
 
-    <h1>Contact me!!</h1>
+@stop
 
-</body>
-
-</html>
+@section('footer')
+    <script>
+        alert('Contact from scripts');
+    </script>
+@stop
