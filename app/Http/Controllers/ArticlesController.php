@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 
 use App\Article;
 use App\Http\Requests;
+use Carbon\Carbon;
+use Request;
 
 class ArticlesController extends Controller
 {
@@ -16,7 +18,8 @@ class ArticlesController extends Controller
      */
     public function index()
     {
-        $articles = Article::all();
+        // $articles = Article::order_by('published_at', 'desc')->get();
+        $articles = Article::latest('published_at')->published()->get();
         return view('articles.index', compact('articles'));
     }
 
@@ -27,7 +30,7 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        //
+        return view('articles.create');
     }
 
     /**
@@ -38,7 +41,15 @@ class ArticlesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = Request::all();
+        // $input['published_at'] = Carbon::now();
+
+        // $article = new Article;
+        // $article->title = $input['title'];
+
+        Article::create($input);
+
+        return redirect('articles');;
     }
 
     /**
