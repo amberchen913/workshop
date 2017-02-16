@@ -16,7 +16,7 @@ class PagesController extends Controller
     }
 
     public function contact(){
-        $first = 'Amber';
+        $first = 'Amber'; 
         $last = 'Chen';
         return view('pages.contact', compact('first', 'last'));
     }
