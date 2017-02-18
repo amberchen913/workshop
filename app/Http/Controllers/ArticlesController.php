@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 use App\Article;
+use App\User;
 use App\Http\Requests;
-use Carbon\Carbon;
-use Request;
+use App\Http\Requests\ArticleRequest;
+use Illuminate\HttpResponse;
+// use Carbon\Carbon;
+// use Request;
 
 class ArticlesController extends Controller
 {
@@ -24,7 +27,7 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new article.
      *
      * @return \Illuminate\Http\Response
      */
@@ -34,26 +37,28 @@ class ArticlesController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a new article.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request) //public function store(CreateArticleRequest $request)
     {
-        $input = Request::all();
+        // $input = Request::all();
         // $input['published_at'] = Carbon::now();
 
         // $article = new Article;
         // $article->title = $input['title'];
 
-        Article::create($input);
+        $this->validate($request, ['title' => 'required|min:3', 'body' => 'required', 'published_at' => 'required|date']);
 
-        return redirect('articles');;
+        Article::create($request->all());
+
+        return redirect('articles');
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified article.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -70,6 +75,19 @@ class ArticlesController extends Controller
         return view('articles.show', compact('article'));
     }
 
+    public function getList($uname)
+    {
+        $user = User::where('username', $uname)->first();
+
+        if($user){
+            $articles = Article::where('user_id', $user->id)->get()->all();
+            return view('articles.index', compact('articles'));
+        }
+
+        return redirect('articles');
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
@@ -78,7 +96,8 @@ class ArticlesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $article = Article::findOrFail($id);
+        return view('articles.edit', compact('article'));
     }
 
     /**
@@ -88,9 +107,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, $id)
     {
-        //
+        $article = Article::findOrFail($id);
+        $article->update($request->all());
+        return redirect('articles');
     }
 
     /**
