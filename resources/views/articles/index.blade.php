@@ -1,7 +1,12 @@
 @extends('app')
 
 @section('content')
-    <h1>Articles</h1>
+    @if( isset($user) )
+        <h1>{!! $user->username !!}'s Articles</h1>
+    @else
+        <h1>Articles List</h1>
+    @endif
+
     <hr>
 
     @foreach($articles as $article)

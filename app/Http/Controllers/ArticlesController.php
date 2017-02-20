@@ -8,12 +8,16 @@ use App\Article;
 use App\User;
 use App\Http\Requests;
 use App\Http\Requests\ArticleRequest;
+use Auth;
 use Illuminate\HttpResponse;
 // use Carbon\Carbon;
 // use Request;
 
 class ArticlesController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth',['only' => 'create']); //except
+    }
     /**
      * Display a listing of the resource.
      *
@@ -22,8 +26,9 @@ class ArticlesController extends Controller
     public function index()
     {
         // $articles = Article::order_by('published_at', 'desc')->get();
+        $user = Auth::user();
         $articles = Article::latest('published_at')->published()->get();
-        return view('articles.index', compact('articles'));
+        return view('articles.index', compact('articles','user'));
     }
 
     /**
@@ -33,6 +38,9 @@ class ArticlesController extends Controller
      */
     public function create()
     {
+        if(Auth::guest()){
+            return redirect('articles');
+        }
         return view('articles.create');
     }
 
@@ -42,7 +50,7 @@ class ArticlesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) //public function store(CreateArticleRequest $request)
+    public function store(ArticleRequest $request) //public function store(CreateArticleRequest $request)
     {
         // $input = Request::all();
         // $input['published_at'] = Carbon::now();
@@ -50,9 +58,16 @@ class ArticlesController extends Controller
         // $article = new Article;
         // $article->title = $input['title'];
 
-        $this->validate($request, ['title' => 'required|min:3', 'body' => 'required', 'published_at' => 'required|date']);
+        // $request = $request->all();
+        // $request['user_id'] = Auth::id();
 
-        Article::create($request->all());
+        $article = new Article($request->all());
+        
+        Auth::user()->articles()->save($article);
+
+        //$this->validate($request, ['title' => 'required|min:3', 'body' => 'required', 'published_at' => 'required|date']);
+
+        // Article::create($request->all());
 
         return redirect('articles');
     }
@@ -81,7 +96,7 @@ class ArticlesController extends Controller
 
         if($user){
             $articles = Article::where('user_id', $user->id)->get()->all();
-            return view('articles.index', compact('articles'));
+            return view('articles.index', compact('articles','user'));
         }
 
         return redirect('articles');
