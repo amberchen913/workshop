@@ -1,0 +1,1 @@
+{"version":3,"sources":["pages/home.scss","app.scss"],"names":[],"mappings":"AAAA;EACI,WAAU;CACb;;ACCD;EACI,kBAAiB;CACpB","file":"app.css","sourcesContent":[".home{\r\n    color: red;\r\n}","// @import \"node_modules/bootstrap-sass/assets/stylesheets/bootstrap\";\n@import 'pages/home';\n\nbody{\n    padding-top: 40px;\n}\n"]}

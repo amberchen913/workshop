@@ -1,0 +1,1 @@
+{"version":3,"sources":["normalize.css","app.css"],"names":[],"mappings":"AAAA;AACA;ACDA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA","file":"all.css","sourcesContent":["\n",".home {\n  color: red;\n}\n\nbody {\n  color:purple;\n}\n\n/*# sourceMappingURL=app.css.map */\n"]}

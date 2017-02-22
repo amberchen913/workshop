@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 
 use App\Article;
 use App\User;
-use App\Http\Requests;
+//use App\Http\Requests;
 use App\Http\Requests\ArticleRequest;
 use Auth;
-use Illuminate\HttpResponse;
+//use Illuminate\HttpResponse;
+//use Session;
+//use Flash;
 // use Carbon\Carbon;
 // use Request;
 
@@ -61,9 +63,16 @@ class ArticlesController extends Controller
         // $request = $request->all();
         // $request['user_id'] = Auth::id();
 
-        $article = new Article($request->all());
+//        $article = new Article($request->all());
+//        Auth::user()->articles()->save($article);
         
-        Auth::user()->articles()->save($article);
+        Auth::user()->articles()->create($request->all());
+        
+//        flash()->success('Your article has been created!');
+        flash()->overlay('Your article has been created!', 'Good Job');
+        
+//        \Session::flash('flash_message', 'Your article has been created!');
+//        session()->flash('flash_message', 'Your article has been created!');
 
         //$this->validate($request, ['title' => 'required|min:3', 'body' => 'required', 'published_at' => 'required|date']);
 
@@ -80,6 +89,7 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
+        // dd($id);
         $article = Article::findOrFail($id);
 
         // dd($article);
